@@ -1,18 +1,8 @@
-# Usar imagem oficial do Node.js
-FROM node:18
-
-# Definir diretório de trabalho
+'''
+FROM python:3.10
 WORKDIR /app
-
-# Copiar arquivos do projeto
-COPY package.json package-lock.json ./
-RUN npm install
-
-# Copiar o restante dos arquivos
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
-
-# Expor a porta da API
-EXPOSE 3000
-
-# Comando para rodar a aplicação
-CMD ["node", "src/server.js"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+'''

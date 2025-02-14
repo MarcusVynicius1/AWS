@@ -1,24 +1,32 @@
+'''
 version: '3.8'
 
 services:
   db:
-    image: postgres:latest
+    image: postgres:13
+    container_name: livraria_db
     restart: always
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: bookstore
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: livraria
     ports:
       - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
   app:
     build: .
+    container_name: livraria_api
+    ports:
+      - "8000:8000"
     depends_on:
       - db
-    environment:
-      DB_HOST: db
-      DB_USER: user
-      DB_PASSWORD: password
-      DB_NAME: bookstore
-    ports:
-      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+
+volumes:
+  pgdata:
+'''
